@@ -15,9 +15,10 @@ RUN apk --no-cache add \
     python3 python3-dev py3-pip
 
 # Create a non-root user (that can still run commands as root if required), and use it by default.
-# This is identical to how the GitHub-hosted runners are configured.
+# The user and group names are identical to those on GitHub's official Ubuntu runner images.
 RUN apk --no-cache add sudo && \
-    adduser -D runner && \
+    addgroup -g 1001 runner && \
+    adduser -u 1001 -G runner -D runner && \
     echo runner:runner | chpasswd && \
     echo 'Defaults:runner !requiretty' > /etc/sudoers.d/runner && \
     echo 'runner ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/runner && \
