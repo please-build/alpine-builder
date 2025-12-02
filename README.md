@@ -8,8 +8,9 @@ other purpose.
 
 - Images are only built for the `linux/amd64` and `linux/arm64` platforms, since these are the only Linux platforms
   supported by Please.
-- By default, commands are executed in the container by the `runner` user. This user is allowed to run sudo without a
-  password.
+- By default, commands are executed in the container by the `runner` user (UID 1001), whose primary group is similarly
+  `runner` (GID 1001). These match the user and group names and IDs used by the equivalent user in GitHub's official
+  Ubuntu runner images. The `runner` user is allowed to run sudo without a password.
 - Additional run-time dependencies for Please and the `pleasew` script are installed from the Alpine Linux repositories:
   - `bash`
   - `curl`
