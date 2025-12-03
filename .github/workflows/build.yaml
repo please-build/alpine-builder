@@ -44,6 +44,20 @@ jobs:
           outputs: type=image
           load: true
           tags: ${{ env.TEST_TAG }}
+      - name: Verify image's target platforms
+        run: |
+          amd64_uname="$(docker run --rm --platform linux/amd64 ${{ env.TEST_TAG }} /bin/bash -c 'uname -m')"
+          arm64_uname="$(docker run --rm --platform linux/arm64 ${{ env.TEST_TAG }} /bin/bash -c 'uname -m')"
+          rc=0
+          if [ "$amd64_uname" != x86_64 ]; then
+            echo "Wrong machine hardware name for amd64 image: got $amd64_uname, expected x86_64" >&2
+            rc=1
+          fi
+          if [ "$arm64_uname" != aarch64 ]; then
+            echo "Wrong machine hardware name for arm64 image: got $arm64_uname, expected aarch64" >&2
+            rc=1
+          fi
+          exit $rc
       - name: Test cc-rules plugin
         run: |
           for platform in linux/amd64 linux/arm64; do
