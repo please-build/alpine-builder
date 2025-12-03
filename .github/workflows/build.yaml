@@ -57,9 +57,7 @@ jobs:
             echo "Wrong machine hardware name for arm64 image: got $arm64_uname, expected aarch64" >&2
             rc=1
           fi
-          if [ $rc -ne 0 ]; then
-            exit 1
-          fi
+          exit $rc
       - name: Test cc-rules plugin
         run: |
           for platform in linux/amd64 linux/arm64; do
